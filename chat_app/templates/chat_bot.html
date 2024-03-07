@@ -413,32 +413,43 @@
           .setAttribute("placeholder", "Ask your question");
       }
 
+      let requestInProgress = false;
+
       function chat_ajax() {
+        if (requestInProgress) {
+          // If a request is already in progress, return early to prevent duplicate requests
+          return;
+        }
+
+        // Set flag to indicate that a request is in progress
+        requestInProgress = true;
+
         const md = new markdownit({ html: true });
         let text = document.querySelector("#userText").value;
         let html = md.renderInline(text);
         let chatCard = document.querySelector("#scroll");
 
+        // Append user's message to chat card
         chatCard.innerHTML += `
-            <div class="d-flex flex-row justify-content-end mb-3">
-                <div>
-                    <div style="background-color: #1b1b1b8e; font-size: smaller; border-radius: 20px 0px 20px 20px;" class="small p-2 me-2 mb-1 text-white ms-auto">${text}</div>
-                </div>
-                <img class="rounded-circle mb-1" src="https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/profile.webp?raw=true" alt="avatar 1" style="width: 40px; height: 100%;">
-            </div>
-        `;
+              <div class="d-flex flex-row justify-content-end mb-3">
+                  <div>
+                      <div style="background-color: #1b1b1b8e; font-size: smaller; border-radius: 20px 0px 20px 20px;" class="small p-2 me-2 mb-1 text-white ms-auto">${text}</div>
+                  </div>
+                  <img class="rounded-circle mb-1" src="https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/profile.webp?raw=true" alt="avatar 1" style="width: 40px; height: 100%;">
+              </div>
+          `;
         chatCard.scrollTop = chatCard.scrollHeight;
-        console.log(text);
 
         document.querySelector("#userText").value = null;
 
         var loading = document.querySelector("#loading");
         myFunction();
         loading.innerHTML = `
-            <div class="loader">
-            </div>
-        `;
+              <div class="loader">
+              </div>
+          `;
         chatCard.scrollTop = chatCard.scrollHeight;
+
         $.ajax({
           type: "POST",
           url: "/ask_question/",
@@ -449,51 +460,57 @@
           success: function (res) {
             var response = md.render(res.data.text); // Render Markdown content
             var chatCard = document.getElementById("scroll");
+            var typingSpeed = 15; // Set the typing speed in milliseconds
+            // Create response_data div
+            var responseDataDiv = document.createElement("div");
+            responseDataDiv.id = "response_data";
+            responseDataDiv.classList.add(
+              "d-flex",
+              "flex-row",
+              "justify-content-start",
+              "mb-3"
+            );
+            chatCard.appendChild(responseDataDiv);
 
-            // Check if the bot's response already exists in the chat window
-            if (!chatCard.innerHTML.includes(response)) {
-              var responseDataDiv = document.createElement("div");
-              responseDataDiv.id = "response_data";
-              responseDataDiv.classList.add(
-                "d-flex",
-                "flex-row",
-                "justify-content-start",
-                "mb-3"
-              );
-              chatCard.appendChild(responseDataDiv);
+            // Create avatar image
+            var avatarImg = document.createElement("img");
+            avatarImg.src =
+              "https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true";
+            avatarImg.alt = "avatar 1";
+            avatarImg.style.width = "40px";
+            avatarImg.style.height = "100%";
+            responseDataDiv.appendChild(avatarImg);
 
-              var avatarImg = document.createElement("img");
-              avatarImg.src =
-                "https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true";
-              avatarImg.alt = "avatar 1";
-              avatarImg.style.width = "40px";
-              avatarImg.style.height = "100%";
-              responseDataDiv.appendChild(avatarImg);
-
-              var chatAreaDiv = document.createElement("div");
-              chatAreaDiv.id = "chatArea";
-              chatAreaDiv.classList.add(
-                "small",
-                "p-2",
-                "ms-2",
-                "mb-1",
-                "me-auto",
-                "text-dark"
-              );
-              chatAreaDiv.style.backgroundColor = "#ffffffb8";
-              chatAreaDiv.style.fontSize = "smaller";
-              chatAreaDiv.style.borderRadius = "0px 20px 20px 20px";
-              chatAreaDiv.innerHTML = response;
-              responseDataDiv.appendChild(chatAreaDiv);
-
-              loading.innerHTML = "";
-              chatCard.scrollTop = chatCard.scrollHeight;
-            }
+            // Create chatArea div
+            var chatAreaDiv = document.createElement("div");
+            chatAreaDiv.id = "chatArea";
+            chatAreaDiv.classList.add(
+              "small",
+              "p-2",
+              "ms-2",
+              "mb-1",
+              "me-auto",
+              "text-dark"
+            );
+            chatAreaDiv.style.backgroundColor = "#ffffffb8";
+            chatAreaDiv.style.fontSize = "smaller";
+            chatAreaDiv.style.borderRadius = "0px 20px 20px 20px";
+            chatAreaDiv.innerHTML = response;
+            responseDataDiv.appendChild(chatAreaDiv);
+            // chatAreaDiv.innerHTML += response
+            loading.innerHTML = "";
+            chatCard.scrollTop = chatCard.scrollHeight;
             enableUserText();
+
+            // Reset flag after processing response
+            requestInProgress = false;
           },
 
           error: function () {
             console.log("There was an error!");
+
+            // Reset flag after error handling
+            requestInProgress = false;
           },
         });
       }
