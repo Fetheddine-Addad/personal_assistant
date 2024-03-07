@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, reverse
 from django.contrib.auth.decorators import login_required
 from .models import ChatBot
@@ -9,7 +10,6 @@ import os
 # Create your views here.
 # add here to your generated API key
 genai.configure(api_key=os.getenv("GENERATIVEAI_API_KEY"))
-
 
 @login_required
 def ask_question(request):
