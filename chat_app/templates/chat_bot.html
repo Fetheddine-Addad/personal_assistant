@@ -359,6 +359,35 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Simulate initial response from the bot
+        simulateBotResponse(
+          "Hello, I'm PlannerBot, your personal assistant. Iam here to help you with your daily tasks. Ask me anything!"
+        );
+
+        document
+          .querySelector("#submitBtn")
+          .addEventListener("click", () => chat_ajax());
+      });
+
+      function simulateBotResponse(responseText) {
+        const md = new markdownit({ html: true });
+        const chatCard = document.querySelector("#scroll");
+
+        // Append bot's message to chat card
+        chatCard.innerHTML += `
+            <div class="d-flex flex-row justify-content-start mb-3">
+                <img src="https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true" alt="avatar 1" style="width: 40px; height: 100%;">
+                <div>
+                    <div id="chatArea" class="small p-2 ms-2 mb-1 me-auto text-dark" style="background-color: #ffffffb8; font-size: smaller; border-radius: 0px 20px 20px 20px;">
+                        ${md.renderInline(responseText)}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        chatCard.scrollTop = chatCard.scrollHeight;
+      }
       let chatCard = document.querySelector("#scroll");
       chatCard.scrollTop = chatCard.scrollHeight;
 
@@ -413,7 +442,6 @@
         `;
         chatCard.scrollTop = chatCard.scrollHeight;
         $.ajax({
-<<<<<<< HEAD
           type: "POST",
           url: "/ask_question/",
           data: {
@@ -434,49 +462,11 @@
               "mb-3"
             );
             chatCard.appendChild(responseDataDiv);
-=======
-            type: 'POST',
-            url: '/ask_question/',
-            data: {
-                'text': text,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-            },
-            success: function(res) {
-              var response = md.render(res.data.text); // Render Markdown content
-              var chatCard = document.getElementById('scroll');
-              var typingSpeed = 15; // Set the typing speed in milliseconds
-              // Create response_data div
-              var responseDataDiv = document.createElement('div');
-              responseDataDiv.id = 'response_data';
-              responseDataDiv.classList.add('d-flex', 'flex-row', 'justify-content-start', 'mb-3');
-              chatCard.appendChild(responseDataDiv);
-              
-              // Create avatar image
-              var avatarImg = document.createElement('img');
-              avatarImg.src = "https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true";
-              avatarImg.alt = "avatar 1";
-              avatarImg.style.width = '40px';
-              avatarImg.style.height = '100%';
-              responseDataDiv.appendChild(avatarImg);
-              
-              // Create chatArea div
-              var chatAreaDiv = document.createElement('div');
-              chatAreaDiv.id = 'chatArea';
-              chatAreaDiv.classList.add('small', 'p-2', 'ms-2', 'mb-1', 'me-auto', 'text-dark');
-              chatAreaDiv.style.backgroundColor = '#ffffffb8';
-              chatAreaDiv.style.fontSize = 'smaller';
-              chatAreaDiv.style.borderRadius = '0px 20px 20px 20px';
-              chatAreaDiv.innerHTML = response;
-              responseDataDiv.appendChild(chatAreaDiv);
-              // chatAreaDiv.innerHTML += response
-              loading.innerHTML = '';
-              chatCard.scrollTop = chatCard.scrollHeight;
-              enableUserText();
->>>>>>> 83f2aaf2d21934c71d9a219914e7e686f229ec03
 
             // Create avatar image
             var avatarImg = document.createElement("img");
-            avatarImg.src = "https://espere.in/static/images/newlogo.png";
+            avatarImg.src =
+              "https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true";
             avatarImg.alt = "avatar 1";
             avatarImg.style.width = "40px";
             avatarImg.style.height = "100%";
@@ -508,14 +498,7 @@
             console.log("There was an error!");
           },
         });
-<<<<<<< HEAD
       }
     </script>
   </body>
-=======
-    }
-</script>
-
-</body>
->>>>>>> 83f2aaf2d21934c71d9a219914e7e686f229ec03
 </html>
