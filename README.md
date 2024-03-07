@@ -28,3 +28,4 @@ python manage.py createsuperuser
 python manage.py runserver 
 
 login using the credentials you've created 
+![image](https://github.com/Fetheddine-Addad/personal_assistant/assets/91231544/4f7e5dea-32ee-4ac0-9fd7-75fd4e1a8609)
