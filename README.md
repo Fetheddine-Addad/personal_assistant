@@ -1,4 +1,4 @@
-## Chatbot Task Planner with Django and Gemini
+## Chatbot assistant with Django and Gemini
 
 **Introduction**
 
