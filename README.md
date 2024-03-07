@@ -15,7 +15,7 @@ This project creates a chatbot task planner using Django for the web framework a
 
 Create .env File:
 
-find  a file named .env in the project's root directory.
+create a file named .env in the project's root directory.
 
 Add the following line, replacing <your_gemini_api_key> with your actual Gemini API key obtained from Google Cloud Console:
 
