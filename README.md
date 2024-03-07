@@ -1,8 +1,8 @@
-## Chatbot Task Planner with Django and Gemini
+## Chatbot assistant with Django and Gemini
 
 **Introduction**
 
-This project creates a chatbot task planner using Django for the web framework and Google Gemini for natural language processing.
+This project creates a chatbot assistant using Django for the web framework and Google Gemini for natural language processing.
 
 **Requirements**
 
