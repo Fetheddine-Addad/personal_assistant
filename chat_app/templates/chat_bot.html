@@ -413,6 +413,7 @@
         `;
         chatCard.scrollTop = chatCard.scrollHeight;
         $.ajax({
+<<<<<<< HEAD
           type: "POST",
           url: "/ask_question/",
           data: {
@@ -433,6 +434,45 @@
               "mb-3"
             );
             chatCard.appendChild(responseDataDiv);
+=======
+            type: 'POST',
+            url: '/ask_question/',
+            data: {
+                'text': text,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(res) {
+              var response = md.render(res.data.text); // Render Markdown content
+              var chatCard = document.getElementById('scroll');
+              var typingSpeed = 15; // Set the typing speed in milliseconds
+              // Create response_data div
+              var responseDataDiv = document.createElement('div');
+              responseDataDiv.id = 'response_data';
+              responseDataDiv.classList.add('d-flex', 'flex-row', 'justify-content-start', 'mb-3');
+              chatCard.appendChild(responseDataDiv);
+              
+              // Create avatar image
+              var avatarImg = document.createElement('img');
+              avatarImg.src = "https://github.com/Fetheddine-Addad/personal_assistant/blob/main/assets/logo.jpg?raw=true";
+              avatarImg.alt = "avatar 1";
+              avatarImg.style.width = '40px';
+              avatarImg.style.height = '100%';
+              responseDataDiv.appendChild(avatarImg);
+              
+              // Create chatArea div
+              var chatAreaDiv = document.createElement('div');
+              chatAreaDiv.id = 'chatArea';
+              chatAreaDiv.classList.add('small', 'p-2', 'ms-2', 'mb-1', 'me-auto', 'text-dark');
+              chatAreaDiv.style.backgroundColor = '#ffffffb8';
+              chatAreaDiv.style.fontSize = 'smaller';
+              chatAreaDiv.style.borderRadius = '0px 20px 20px 20px';
+              chatAreaDiv.innerHTML = response;
+              responseDataDiv.appendChild(chatAreaDiv);
+              // chatAreaDiv.innerHTML += response
+              loading.innerHTML = '';
+              chatCard.scrollTop = chatCard.scrollHeight;
+              enableUserText();
+>>>>>>> 83f2aaf2d21934c71d9a219914e7e686f229ec03
 
             // Create avatar image
             var avatarImg = document.createElement("img");
@@ -468,7 +508,14 @@
             console.log("There was an error!");
           },
         });
+<<<<<<< HEAD
       }
     </script>
   </body>
+=======
+    }
+</script>
+
+</body>
+>>>>>>> 83f2aaf2d21934c71d9a219914e7e686f229ec03
 </html>
